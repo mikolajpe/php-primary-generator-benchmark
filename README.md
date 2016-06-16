@@ -2,24 +2,20 @@
 
 ```
 composer install
-./vendor/bin/phpbench run PrimaryBench.php --report=default
+./vendor/bin/phpbench run PrimaryBench.php --report=all
 ```
 
 ```
-PhpBench 0.11-dev (@git_sha@). Running benchmarks.
-Using configuration file: /home/mprzybysz/work/GeneratorBenchmark/phpbench.json
-
-\PrimaryBench
-
-    benchPrimeNormal              I999 P0 	[μ Mo]/r: 365.044 360.656 (μs) 	[μSD μRSD]/r: 10.521μs 2.88%
-    benchPrimeOldNormalWhile      I999 P0 	[μ Mo]/r: 77.344 76.093 (μs) 	[μSD μRSD]/r: 3.370μs 4.36%
-    benchPrimeOldNormalFor        I999 P0 	[μ Mo]/r: 77.212 75.721 (μs) 	[μSD μRSD]/r: 3.068μs 3.97%
-    benchPrimeOldNormalGoto       I999 P0 	[μ Mo]/r: 76.721 75.384 (μs) 	[μSD μRSD]/r: 3.232μs 4.21%
-    benchPrimeGenerator           I999 P0 	[μ Mo]/r: 13.199 12.488 (μs) 	[μSD μRSD]/r: 1.559μs 11.81%
-    benchPrimeGeneratorIf         I999 P0 	[μ Mo]/r: 409.301 404.286 (μs) 	[μSD μRSD]/r: 14.352μs 3.51%
-
-6 subjects, 6,000 iterations, 1,200 revs, 0 rejects
-(best [mean mode] worst) = 11.375 [169.803 167.438] 22.750 (μs)
-⅀T: 1,018,820.180μs μSD/r 6.017μs μRSD/r: 5.124%
-suite: 133a068e31a088ed17154e96051f76b14f9803eb, date: 2016-06-16, stime: 14:06:16
++-----------------------------+------+------+----------+-------------+-------------+-------------+-------------+--------+---------+
+| subject                     | revs | its  | mem      | best        | mean        | mode        | worst       | rstdev | diff    |
++-----------------------------+------+------+----------+-------------+-------------+-------------+-------------+--------+---------+
+| benchPrimeNormal            | 200  | 1000 | 710,344b | 919.540μs   | 960.927μs   | 952.243μs   | 1,902.540μs | 5.03%  | 0.00%   |
+| benchPrimeOldNormalWhile    | 200  | 1000 | 710,344b | 922.550μs   | 968.763μs   | 958.554μs   | 2,149.070μs | 5.54%  | +0.81%  |
+| benchPrimeOldNormalFor      | 200  | 1000 | 710,344b | 943.865μs   | 1,009.332μs | 981.371μs   | 2,312.830μs | 8.18%  | +4.80%  |
+| benchPrimeOldNormalGoto     | 200  | 1000 | 710,344b | 929.795μs   | 990.897μs   | 959.481μs   | 1,728.205μs | 8.92%  | +3.02%  |
+| benchPrimeNormalWhileInline | 200  | 1000 | 710,344b | 933.705μs   | 1,005.046μs | 969.654μs   | 2,158.375μs | 11.05% | +4.39%  |
+| benchPrimeGenerator         | 200  | 1000 | 833,088b | 1,055.245μs | 1,092.129μs | 1,083.591μs | 1,817.600μs | 3.90%  | +12.01% |
+| benchPrimeGeneratorIf       | 200  | 1000 | 833,056b | 1,055.815μs | 1,095.657μs | 1,079.035μs | 1,903.340μs | 5.83%  | +12.30% |
+| benchPrimeGeneratorGoto     | 200  | 1000 | 833,056b | 1,049.345μs | 1,082.866μs | 1,073.435μs | 1,733.245μs | 3.20%  | +11.26% |
++-----------------------------+------+------+----------+-------------+-------------+-------------+-------------+--------+---------+
 ```

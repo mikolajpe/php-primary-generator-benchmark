@@ -8,6 +8,8 @@
  */
 final class PrimaryBench
 {
+    const PRIME_COUNT = 200;
+
     function isPrime($num) {
         //1 is not prime. See: http://en.wikipedia.org/wiki/Prime_number#Primality_of_one
         if($num == 1)
@@ -50,7 +52,7 @@ final class PrimaryBench
         };
 
         $i = 7;
-        for ($a = 0; $a < 100; $a++) {
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
             $i = $tgen($i);
         }
     }
@@ -63,15 +65,14 @@ final class PrimaryBench
         $self = $this;
         $tgen = function($v) use ($self) {
             while (true) {
-                if ($self->isPrime($v)) {
+                if ($self->isPrime(++$v)) {
                     return $v;
                 }
-                $v++;
             };
         };
 
         $i = 7;
-        for ($a = 0; $a < 100; $a++) {
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
             $i = $tgen($i);
         }
     }
@@ -83,15 +84,15 @@ final class PrimaryBench
     {
         $self = $this;
         $tgen = function($v) use ($self) {
-            for(;;$v++) {
-                if ($self->isPrime($v)) {
+            for(;;) {
+                if ($self->isPrime(++$v)) {
                     return $v;
                 }
             };
         };
 
         $i = 7;
-        for ($a = 0; $a < 100; $a++) {
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
             $i = $tgen($i);
         }
     }
@@ -104,14 +105,14 @@ final class PrimaryBench
         $self = $this;
         $tgen = function($v) use ($self) {
             start:
-            if ($self->isPrime($v)) {
+            if ($self->isPrime(++$v)) {
                 return $v;
             }
             goto start;
         };
 
         $i = 7;
-        for ($a = 0; $a < 100; $a++) {
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
             $i = $tgen($i);
         }
     }
@@ -120,19 +121,41 @@ final class PrimaryBench
     /**
      * @Iterations(1000)
      */
+    public function benchPrimeNormalWhileInline()
+    {
+        $self = $this;
+        $tgen = function($v) use ($self) {
+            while(!$self->isPrime(++$v));
+            return $v;
+        };
+
+
+        $i = 7;
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
+            $i = $tgen($i);
+        }
+
+    }
+
+    /**
+     * @Iterations(1000)
+     */
     public function benchPrimeGenerator()
     {
         $self = $this;
         $tgen = function($v) use ($self) {
-            while (!$self->isPrime(++$v));
-            yield $v;
+            while(true) {
+                while (!$self->isPrime(++$v));
+                yield $v;
+            }
         };
 
 
         $i = 7;
         $gen = $tgen($i);
-        for ($a = 0; $a < 100; $a++) {
-            $b = $gen->next();
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
+            $gen->next();
+            $b = $gen->current();
         }
 
     }
@@ -154,8 +177,33 @@ final class PrimaryBench
 
         $i = 7;
         $gen = $tgen($i);
-        for ($a = 0; $a < 100; $a++) {
-            $b = $gen->next();
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
+            $gen->next();
+            $b = $gen->current();
+        }
+
+    }
+
+    /**
+     * @Iterations(1000)
+     */
+    public function benchPrimeGeneratorGoto()
+    {
+        $self = $this;
+        $tgen = function($v) use ($self) {
+            start2:
+            if($self->isPrime(++$v)) {
+                yield $v;
+            }
+            goto start2;
+        };
+
+
+        $i = 7;
+        $gen = $tgen($i);
+        for ($a = 0; $a < self::PRIME_COUNT; $a++) {
+            $gen->next();
+            $b = $gen->current();
         }
 
     }
